@@ -7,14 +7,17 @@ import sklearn
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 
+# Read all samples
 samples = []
 with open('data/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
     for line in reader:
         samples.append(line)
 
+# Create training and validation data sets
 train_samples, validation_samples = train_test_split(samples, test_size=0.2)
 
+# Define generator to supply batch data on the fly
 def generator(samples, batch_size=32):
     num_samples = len(samples)
     while 1: # Loop forever so the generator never terminates
@@ -25,18 +28,22 @@ def generator(samples, batch_size=32):
             images = []
             angles = []
             for batch_sample in batch_samples:
+                # Loop for center, left and right images
                  for i in range(3):
                     source_name = batch_sample[i]
                     name = 'data/IMG/'+source_name.split('/')[-1] #for sample data
                     # filename = source_name[62:] #for recorded training data
                     # name = 'data/IMG/' + filename #for recorded training data
                     cam_image = cv2.imread(name)
+                    # Convert to RGB since simulator passes that image
                     cam_image = cv2.cvtColor(cam_image, cv2.COLOR_BGR2RGB)
                     images.append(cam_image)
+                    # Augment data by flipping every image and doubling data set size
                     images.append(cv2.flip(cam_image,1))
                  center_angle = float(batch_sample[3])
-                 # correction = 0.2 #for sample data
-                 correction = 0.2 #for recorded training data
+                 # Define steering angle correction factor for left and right images
+                 correction = 0.25 
+                 # Add steering angles in the order images were appended. Flip sign for flipped images.
                  angles.append(center_angle)
                  angles.append(-1.0*center_angle)
                  angles.append(center_angle+correction)
@@ -52,6 +59,7 @@ def generator(samples, batch_size=32):
 train_generator = generator(train_samples, batch_size=32)
 validation_generator = generator(validation_samples, batch_size=32)
 
+# Debug generator
 # print('# of training samples: ', str(len(train_samples)))
 # print('# of validation samples: ', str(len(validation_samples)))
 # for i in range(0,math.ceil(len(train_samples)/32)):
@@ -66,6 +74,7 @@ from keras.layers import Flatten, Dense, Lambda
 from keras.layers.convolutional import Convolution2D, Cropping2D
 from keras.layers.pooling import MaxPooling2D
 
+# Define model architecture
 model = Sequential()
 model.add(Lambda(lambda x: x/255.0-0.5, input_shape=(160,320,3)))
 model.add(Cropping2D(cropping=((70,25),(0,0)), input_shape=(160,320,3)))
@@ -78,10 +87,12 @@ model.add(Dense(120))
 model.add(Dense(84))
 model.add(Dense(1))
 
+# Train model
 model.compile(loss='mse', optimizer='adam')
 model_history = model.fit_generator(train_generator, samples_per_epoch=len(train_samples)*6, validation_data=validation_generator,nb_val_samples=len(validation_samples),nb_epoch=5)
 
-model.save('model_lenetmod_e5_lr_2_aug_crop_st_gen.h5')
+# Save model
+model.save('model.h5')
 
 # import matplotlib.pyplot as plt
 
