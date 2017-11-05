@@ -1,4 +1,4 @@
-**Behavioral Cloning Project**
+# **Behavioral Cloning Project**
 
 The goals / steps of this project are the following:
 * Use the simulator to collect data of good driving behavior
@@ -111,10 +111,12 @@ To capture good driving behavior, I first recorded two laps on track one using c
 
 ![alt text][image2]
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to drive back on to the road. These images show what a recovery looks like:
+I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to drive back on to the road. These following 3 images show what a recovery looks like from the left boundary to the center:
 
 ![alt text][image3]
+
 ![alt text][image4]
+
 ![alt text][image5]
 
 To augment the data sat, I also flipped images and angles as described above. For example, here is an image that has then been flipped:
@@ -132,3 +134,7 @@ I finally randomly shuffled the data set and put 20% of the data into a validati
 I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 5 as shown by the screenshot below. I used an adam optimizer so that manually training the learning rate wasn't necessary.
 
 ![alt text][image10]
+
+### References and Future Considerations
+helpful links
+ideas to try
