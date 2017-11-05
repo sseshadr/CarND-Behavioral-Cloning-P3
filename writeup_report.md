@@ -33,7 +33,7 @@ My project includes the following files:
 * model.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
-* writeup_report.md or writeup_report.pdf summarizing the results
+* writeup_report.md summarizing the results
 
 #### 2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file (unaltered from project resources), the car can be driven autonomously around the track by executing 
@@ -85,13 +85,13 @@ Inside the network, I first normalized the images and then cropped them (top 70 
 
 I originally used 2 filters of size 5x5 and depth 6 (typo induced). For this, the training loss did not change between epochs appreciably. I then set one of the filter depths to 16 and this resulted in both the training and validation loss going down for all 5 epochs.  
 
-The lesson that I have learnt in the last couple of projects is that when it comes to deep neuranl networks, overfitting is a good problem to have. By that, it means at least your model has converged for the training data. Until you get to this point, your model architecture/training data probably needs some fixing. A good way to get the model to overfit is to use a higher number of epochs. Even though the tutorial videos used epochs as low as 2/3, I stuck to using 5 and the model was able to converege without overfitting. 
+The lesson that I have learnt in the last couple of projects is that when it comes to deep neural networks, overfitting is a good problem to have. By that, it means at least your model has converged for the training data. Until you get to this point, your model architecture/training data probably needs some fixing. A good way to get the model to overfit is to use a higher number of epochs. Even though the tutorial videos used epochs as low as 2/3, I stuck to using 5 and the model was able to converege and without overfitting. 
 
 The final step was to run the simulator to see how well the car was driving around track one. The biggest challenge for me was to be able to navigate the car around the curve shown below:
 
 ![alt text][image8]
 
-With the filter sizes for both layers set to 6, they model was not able to 'see' this a boundary or a non driveable area.
+With the filter sizes for both layers set to 6, the model was not able to 'see' this a boundary or the off road path as a non driveable area.
 
 With one filter set to a higher depth, the performance was much better.
 
@@ -101,7 +101,7 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 #### 2. Final Model Architecture
 
-The final model architecture (model.py lines 77-88) consisted of a convolution neural network with the following layers and layer sizes 
+The final model architecture (model.py lines 77-88) consisted of a convolutional neural network with the following layers and layer sizes 
 
 ![alt text][image1]
 
@@ -135,6 +135,19 @@ I used this training data for training the model. The validation set helped dete
 
 ![alt text][image10]
 
-### References and Future Considerations
-helpful links
-ideas to try
+### References
+The following links were useful in completing the project:
+
+* [Can’t finish track 1. What am I doing wrong? - Forum post](https://discussions.udacity.com/t/cant-finish-track-1-what-am-i-doing-wrong/389954/14)
+
+* [Issue with generators - Forum post](https://discussions.udacity.com/t/issue-with-generators/408705/7)
+
+* Udacity Behavioral Cloning Q&A Video
+
+### Future Considerations
+
+* When the car initially starts and the area of the track just after the bridge, you can see the car over correcting and swaying left and right. This is perhaps because of the hardcoded steering correction factor. A more elegant way to come up with this number dynamically based on where the car is on the track can be thought of so the steering prediction is smoother.
+
+* Training process is not so bad, it takes about a minute for every epoch. We could make this faster by operating on smaller images and see if we can maintain similar accuracy.
+
+* We know that the model works on track 1. This model has never been tested on track 2. This is perhaps the best test for checking if the model overfit since it has never seen track 2 before. If the model does not work for track 2, we need to incorporate more generalization techniques into our training process. [This article](https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9) talks about a few ways to do this including random brightness variations etc.
