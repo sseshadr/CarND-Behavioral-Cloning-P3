@@ -1,6 +1,6 @@
 # Behaviorial Cloning Project
 
-#### (This is NOT the write up report for this project. Readme.md is just a clone from the original repository. writeup_behavioralCloning.md is the actual write up for the project.)
+#### (This is NOT the write up report for this project. Readme.md is just a clone from the original repository. writeup_report.md is the actual write up for the project.)
 
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
